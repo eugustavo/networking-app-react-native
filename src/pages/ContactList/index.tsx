@@ -70,35 +70,35 @@ const ContactList: React.FC = () => {
         </TouchableOpacity>
       </SearchInput>
 
-      {contacts.length === 0 ? (
+      {!!contacts ? (
+        <ListContact
+        data={contacts}
+        keyExtractor={(item: ContactProps) => String(item.id)}
+        renderItem={({ item }) => (
+          <Contact onPress={() => navigation.navigate('ContactDetails', { data: item })}>
+            <Infos>
+              {!!item.avatar ? (
+                <Avatar source={{ uri: item.avatar }} />
+              ):(
+                <ActivityIndicator color="#dbdbdb" size={32} />
+              )}
+              
+
+              <InfoUser>
+                <UserName>{item.name}</UserName>
+                <EventName>{item.event}</EventName>
+              </InfoUser>
+            </Infos>
+
+            <Feather name="chevron-right" color="#c2c2c2" size={22} />
+          </Contact>
+          )}
+        />
+      ):(
         <NoContact source={NoContactBackground}>
           <MaterialCommunityIcons name="contacts" color="rgba(255, 255, 255, 0.3)" size={46} />
           <NoContactText>Sem contatos na sua lista</NoContactText>
         </NoContact>
-      ):(
-        <ListContact
-          data={contacts}
-          keyExtractor={(item: ContactProps) => String(item.id)}
-          renderItem={({ item }) => (
-            <Contact onPress={() => navigation.navigate('ContactDetails', { data: item })}>
-              <Infos>
-                {!!item.avatar ? (
-                  <Avatar source={{ uri: item.avatar }} />
-                ):(
-                  <ActivityIndicator color="#dbdbdb" size={32} />
-                )}
-                
-
-                <InfoUser>
-                  <UserName>{item.name}</UserName>
-                  <EventName>{item.event}</EventName>
-                </InfoUser>
-              </Infos>
-
-              <Feather name="chevron-right" color="#c2c2c2" size={22} />
-            </Contact>
-          )}
-        />
       )}
     </Container>
   );
